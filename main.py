@@ -1,20 +1,3 @@
-#from hasher import calculate_sha256
-#from scanner import scan_folder
-
-#file_path = input("Enter file path: ")
-#file_hash = calculate_sha256(file_path)
-#print(f"SHA-256: {file_hash}")
-
-#folder_path = input("Enter folder path: ")
-#files = scan_folder(folder_path)
-
-#for file in files:
- #   hash_value = calculate_sha256(file)
-#
- #   print(f"File {file.name}")
-  #  print(f"SHA-256: {hash_value}")
-   # print(f"-" * 50)
-
 from scanner import scan_folder
 from hasher import calculate_sha256
 from storage import save_baseline, load_baseline
@@ -59,15 +42,3 @@ else:
     print_report(results)
     save_baseline(current_baseline)
     print("\nBaseline updated successfully.")
-
-#files = scan_folder(folder_path)
-
-#baseline = {}
-
-#for file in files:
- #   hash_value = calculate_sha256(file)
-  #  baseline[str(file)] = hash_value
-
-#save_baseline(baseline)
-
-#print("Baseline created successfully.")
