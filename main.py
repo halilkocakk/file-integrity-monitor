@@ -55,10 +55,10 @@ if not Path("baseline.json").exists():
 
 else:
     old_baseline = load_baseline()
-    results = compare_baselines(current_baseline, old_baseline)
+    results = compare_baselines(old_baseline, current_baseline)
     print_report(results)
     save_baseline(current_baseline)
-    print("\nBaseline created successfully.")
+    print("\nBaseline updated successfully.")
 
 #files = scan_folder(folder_path)
 
