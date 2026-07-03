@@ -1,5 +1,5 @@
 from enum import nonmember
-
+from logger import write_log
 from scanner import scan_folder
 from hasher import calculate_sha256
 from storage import save_baseline, load_baseline
@@ -31,9 +31,6 @@ def print_report(results):
     modified_count = len(results["modified"])
     unchanged_count = len(results["unchanged"])
     deleted_count = len(results["deleted"])
-
-    #for status in statuses:
-     #   files = results[status]
 
     total_files = new_count + modified_count + deleted_count + unchanged_count
     print("\n" + "=" * 45)
@@ -76,6 +73,14 @@ if current_baseline is None:
     exit()
 
 if not Path("baseline.json").exists():
+    results = {
+        "new": list(current_baseline.keys()),
+        "modified": [],
+        "deleted": [],
+        "unchanged": []
+    }
+
+    print_report(results)
     save_baseline(current_baseline)
     print("Baseline created successfully.")
 
@@ -89,3 +94,5 @@ else:
 end_time = time.time()
 duration = end_time - start_time
 print(f"\nScan completed in {duration:.2f} seconds.")
+write_log(results, duration, folder_path)
+print("Log saved to scan.log")
