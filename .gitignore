@@ -1,0 +1,7 @@
+baseline.json
+test_folder/
+
+.idea/
+__pycache__/
+*.pyc
+scan.log
