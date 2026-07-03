@@ -1,4 +1,3 @@
-from enum import nonmember
 from logger import write_log
 from scanner import scan_folder
 from hasher import calculate_sha256
@@ -53,46 +52,63 @@ def print_report(results):
             for file in files:
                 print(file)
 
-start_time = time.time()
+def run_scan():
+    start_time = time.time()
 
-folder_path = input("Enter folder path: ")
+    folder_path = input("Enter folder path: ")
 
-folder = Path(folder_path)
+    folder = Path(folder_path)
 
-if not folder.exists():
-    print("Folder does not exist..")
-    exit()
+    if not folder.exists():
+        print("Folder does not exist..")
+        return
 
-if not folder.is_dir():
-    print("This path is not a folder.")
-    exit()
+    if not folder.is_dir():
+        print("This path is not a folder.")
+        return
 
-current_baseline = create_current_baseline(folder)
+    current_baseline = create_current_baseline(folder)
 
-if current_baseline is None:
-    exit()
+    if current_baseline is None:
+        return
 
-if not Path("baseline.json").exists():
-    results = {
-        "new": list(current_baseline.keys()),
-        "modified": [],
-        "deleted": [],
-        "unchanged": []
-    }
+    if not Path("baseline.json").exists():
+        results = {
+            "new": list(current_baseline.keys()),
+            "modified": [],
+            "deleted": [],
+            "unchanged": []
+        }
 
-    print_report(results)
-    save_baseline(current_baseline)
-    print("Baseline created successfully.")
+        print_report(results)
+        save_baseline(current_baseline)
+        print("Baseline created successfully.")
 
-else:
-    old_baseline = load_baseline()
-    results = compare_baselines(old_baseline, current_baseline)
-    print_report(results)
-    save_baseline(current_baseline)
-    print("\nBaseline updated successfully.")
+    else:
+        old_baseline = load_baseline()
+        results = compare_baselines(old_baseline, current_baseline)
+        print_report(results)
+        save_baseline(current_baseline)
+        print("\nBaseline updated successfully.")
 
-end_time = time.time()
-duration = end_time - start_time
-print(f"\nScan completed in {duration:.2f} seconds.")
-write_log(results, duration, folder_path)
-print("Log saved to scan.log")
+    end_time = time.time()
+    duration = end_time - start_time
+    print(f"\nScan completed in {duration:.2f} seconds.")
+    write_log(results, duration, folder_path)
+    print("Log saved to scan.log")
+
+while True:
+    print("========================================\n"
+          "       FILE INTEGRITY MONITOR\n"
+          "========================================\n")
+    print("1. Scan new folder.")
+    print("2. Exit.")
+
+    choice = input("Enter choice: ")
+    if choice == "1":
+        run_scan()
+    elif choice == "2":
+        print("Goodbye!")
+        break
+    else:
+        print("Invalid choice.")
